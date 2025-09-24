@@ -146,40 +146,16 @@
                 </div>
             </div>
 
-            <!-- Delivery Information Form -->
+            <!-- Secure Payment Section -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <h3 class="text-2xl font-semibold mb-4">Delivery Information</h3>
-                <form id="deliveryForm" class="space-y-4">
-                    <div>
-                        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border">
-                    </div>
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
-                        <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border">
-                    </div>
-                    <div>
-                        <label for="address" class="block text-sm font-medium text-gray-700">Street Address</label>
-                        <input type="text" id="address" name="address" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border">
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div>
-                            <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                            <input type="text" id="city" name="city" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border">
-                        </div>
-                        <div>
-                            <label for="state" class="block text-sm font-medium text-gray-700">State</label>
-                            <input type="text" id="state" name="state" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border">
-                        </div>
-                        <div>
-                            <label for="zip" class="block text-sm font-medium text-gray-700">ZIP Code</label>
-                            <input type="text" id="zip" name="zip" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 p-2 border">
-                        </div>
-                    </div>
-                    <button type="submit" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-colors mt-6">
-                        Complete Purchase
-                    </button>
-                </form>
+                <h3 class="text-2xl font-semibold mb-4">Secure Payment</h3>
+                <p class="text-gray-600 mb-4">
+                    We use a secure third-party payment processor to protect your information. 
+                    Please click the button below to be redirected to our secure checkout page.
+                </p>
+                <button id="completePurchaseBtn" class="w-full bg-green-700 hover:bg-green-800 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-colors mt-6">
+                    Complete Purchase
+                </button>
             </div>
         </div>
     </section>
@@ -211,7 +187,7 @@
         const closeCheckoutButton = document.getElementById('closeCheckout');
         const cartSummaryEl = document.getElementById('cartSummary');
         const cartTotalEl = document.getElementById('cartTotal');
-        const deliveryForm = document.getElementById('deliveryForm');
+        const completePurchaseBtn = document.getElementById('completePurchaseBtn');
         
         // Function to create a product card HTML string
         function createProductCard(product) {
@@ -291,9 +267,13 @@
             if (cart.length === 0) {
                 cartSummaryEl.innerHTML = '<p class="text-gray-500 text-center">Your cart is empty.</p>';
                 cartTotalEl.textContent = `$0.00`;
+                completePurchaseBtn.disabled = true;
+                completePurchaseBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 return;
             }
 
+            completePurchaseBtn.disabled = false;
+            completePurchaseBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             cart.forEach(item => {
                 const itemEl = document.createElement('div');
                 itemEl.className = 'flex justify-between items-center';
@@ -320,13 +300,8 @@
             document.body.classList.remove('overflow-hidden'); // Re-enable background scrolling
         });
 
-        deliveryForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const formData = new FormData(deliveryForm);
-            const data = Object.fromEntries(formData.entries());
-
-            console.log('Order Submitted:', data);
-            console.log('Items:', cart);
+        completePurchaseBtn.addEventListener('click', () => {
+            console.log('Simulating secure checkout for items:', cart);
 
             // Show a simple confirmation message
             const confirmationBox = document.createElement('div');
@@ -336,8 +311,8 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <h3 class="text-3xl font-bold text-gray-900 mb-2">Purchase Complete!</h3>
-                    <p class="text-gray-600 mb-6">Thank you for your order. We will deliver it to you soon.</p>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-2">Redirecting to Secure Checkout!</h3>
+                    <p class="text-gray-600 mb-6">In a real application, you would now be taken to a secure payment page.</p>
                     <button onclick="location.reload()" class="bg-green-700 hover:bg-green-800 text-white font-semibold py-2 px-6 rounded-full transition-colors">
                         Close
                     </button>
@@ -351,4 +326,4 @@
         }
     </script>
 </body>
-</html>
+</html>        
